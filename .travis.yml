@@ -13,7 +13,10 @@ addons:
     - pulseaudio-module-x11
   firefox: latest
   chrome: beta
-
+  sonarcloud:
+    organization: "mickster04"
+    token:
+      secure: "Rtq1nu+inR87zPwlGq+ABKAPErfGpM9NXK3RAe2lhqT4Uktn3VeEcEZ4HNPeM0+a/QawnsTF2B8Aok3wQM4psgLCIrWeqaEWkiOeNzWrAN1lvZr+r3tHWFl4/q3y0CQrk8N8nsuCdH+1ntd1f97ODfs9t/6Ee65YAGhyeTVVx4gHYDJrJbN3qqAFIeHL8mOiEEKWzUD0ZoEN3GUhHGku238BLUYc+1itFbpruhoD5uMTIarD75njWcBy5+DLIexBZcg892m06vL5TrHDiv3XYdcNwCHjV3qtDb8tdRNpAqk0fJi+j9jNgws+/mf4lqpfM9AQC9U1uT6FfPPxx+lDUM8u3GCqLh41jlpdxr/RwqkNdsFKBUPfzPxG8FelzOkLr96AcMcuo+m+WEAea71cGKVUnxsFVPzHridrOav+7dfKfd7XMSJ0u1OFfa/E1PcAWk42hqippt7ulMbctZ93+0adFXTCIaQClDbc1jhiRjyw2eD22RtzRkTGhg4BGzaKg61vIG2foGfzzI+oddxgeDvVWWEW8ig3y/KVvZzni2ZEMbMOzPIFzU5FZFmcT0qjI98B8M8q6+B5HnebfMukjLkffD/oJ3B3/zmW26XRL0y31A58vzTezhCqZM/fy2Fo/eemg5fH6XXhkfT9Qmatz2yZNtsbIbKxQBQXX4ghMcA=" # encrypted value of your token
 services:
   - xvfb
 
@@ -36,6 +39,8 @@ before_script:
 
 script:
   - if [[ "$PRINT_SUMMARY" == "false" ]] ; then travis_wait 50 ./scripts/travis.sh ; else ./scripts/travis.sh ; fi
+  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar
+
 
 cache:
   directories:
