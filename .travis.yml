@@ -38,8 +38,8 @@ before_script:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then dbus-launch ; fi
 
 script:
-  - if [[ "$PRINT_SUMMARY" == "false" ]] ; then travis_wait 50 ./scripts/travis.sh ; else ./scripts/travis.sh ; fi
   - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar
+  #- if [[ "$PRINT_SUMMARY" == "false" ]] ; then travis_wait 50 ./scripts/travis.sh ; else ./scripts/travis.sh ; fi
 
 
 cache:
