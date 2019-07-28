@@ -24,13 +24,13 @@ if [[ "${HEADLESS}" == "true" ]] ; then
         mvn antrun:run -Danttarget=scanhelp
     else
         # run headless tests
-        mvn test -U -P travis-headless --batch-mode \
+        mvn test sonar:sonar -U -P travis-headless --batch-mode \
             -Dsurefire.printSummary=${PRINT_SUMMARY} \
             -Dsurefire.runOrder=${RUN_ORDER} \
             -Dant.jvm.args="-Djava.awt.headless=${HEADLESS}" \
             -Djava.awt.headless=${HEADLESS} \
-            -Dcucumber.options="--tags 'not @Ignore' --tags 'not @Headed'"
-        mvn verify sonar:sonar -P travis-headless --batch-mode -Pcoverage -Dsonar.projectKey=mickster04_JMRI -Dsonar.sources=./java/src/ -Dsonar.projectVersion=1.0
+            -Dcucumber.options="--tags 'not @Ignore' --tags 'not @Headed'"\
+            -Pcoverage -Dsonar.projectKey=mickster04_JMRI -Dsonar.sources=./java/src/ -Dsonar.projectVersion=1.0
     fi
 else
     # run full GUI test suite and fail on coverage issues
