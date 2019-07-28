@@ -30,7 +30,7 @@ if [[ "${HEADLESS}" == "true" ]] ; then
             -Dant.jvm.args="-Djava.awt.headless=${HEADLESS}" \
             -Djava.awt.headless=${HEADLESS} \
             -Dcucumber.options="--tags 'not @Ignore' --tags 'not @Headed'"
-        mvn sonar:sonar -Pcoverage -Dsonar.projectKey=mickster04_JMRI -Dsonar.sources=java/src -Dsonar.projectVersion=1.0
+        mvn verify sonar:sonar -P travis-headless --batch-mode -Pcoverage -Dsonar.projectKey=mickster04_JMRI -Dsonar.sources=./java/src/ -Dsonar.projectVersion=1.0
     fi
 else
     # run full GUI test suite and fail on coverage issues
