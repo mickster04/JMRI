@@ -39,9 +39,9 @@ before_script:
 
 script:
   #- sonar-scanner
-  - mvn clean verify sonar:sonar -Pcoverage -Dsonar.projectKey=mickster04_JMRI -Dsonar.sources=java/src
+  #- mvn clean verify
   #- mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar
-  #- if [[ "$PRINT_SUMMARY" == "false" ]] ; then travis_wait 50 ./scripts/travis.sh ; else ./scripts/travis.sh ; fi
+  - if [[ "$PRINT_SUMMARY" == "false" ]] ; then travis_wait 50 ./scripts/travis.sh ; else ./scripts/travis.sh ; fi
 
 
 cache:
