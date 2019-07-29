@@ -1,10 +1,5 @@
 package jmri;
 
-import jmri.DccLocoAddress;
-import jmri.LocoAddress;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 /**
  * This interface extends {@link jmri.IdTag} to include a locomotive address.
  * Typical uses are for RailCom and Transponding.  The default assumption is
@@ -30,7 +25,7 @@ public interface AddressedIdTag extends IdTag {
      *
      * @return current loco address
      */
-    default public LocoAddress getLocoAddress() {
+    default LocoAddress getLocoAddress() {
         int tagNo = Integer.parseInt(getTagID());
         return new DccLocoAddress(tagNo, tagNo > 100 );
     }
