@@ -38,7 +38,7 @@ before_script:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then dbus-launch ; fi
 
 script:
-  - sonar-scanner -Dsonar.projectKey=mickster04_JMRI -Dsonar.projectVersion=1.3
+  - sonar-scanner -Dsonar.projectKey=mickster04_JMRI -Dsonar.projectVersion=1.3 -Dsonar.sources=java/src/
   #- mvn clean verify
   #- mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar
   - if [[ "$PRINT_SUMMARY" == "false" ]] ; then travis_wait 50 ./scripts/travis.sh ; else ./scripts/travis.sh ; fi
