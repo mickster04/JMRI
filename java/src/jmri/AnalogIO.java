@@ -12,7 +12,7 @@ public interface AnalogIO extends NamedBean {
      * In both cases, AnalogIO.getMin() and AnalogIO.getMax() tells the
      * limits of the value.
      */
-    public enum AbsoluteOrRelative {
+    enum AbsoluteOrRelative {
         
         ABSOLUTE(Bundle.getMessage("AnalogIO_Absolute")),
         RELATIVE(Bundle.getMessage("AnalogIO_Relative"));
@@ -34,7 +34,7 @@ public interface AnalogIO extends NamedBean {
      * 
      * @return true if the analog value is stable
      */
-    default public boolean isConsistentValue() {
+    default boolean isConsistentValue() {
         return true;
     }
     
@@ -51,7 +51,7 @@ public interface AnalogIO extends NamedBean {
      *                                  Float.NEGATIVE_INFINITY or
      *                                  Float.POSITIVE_INFINITY
      */
-    public void setCommandedAnalogValue(double value) throws JmriException;
+    void setCommandedAnalogValue(double value) throws JmriException;
 
     /**
      * Query the commanded value. This is a bound parameter, so you can also
@@ -61,7 +61,7 @@ public interface AnalogIO extends NamedBean {
      *
      * @return the analog value
      */
-    public double getCommandedAnalogValue();
+    double getCommandedAnalogValue();
     
     /**
      * Query the known analog value. This is a bound parameter, so you can also
@@ -73,35 +73,35 @@ public interface AnalogIO extends NamedBean {
      *
      * @return the known analog value
      */
-    default public double getKnownAnalogValue() {
+    default double getKnownAnalogValue() {
         return getCommandedAnalogValue();
     }
     
     /**
      * Get the minimum value of this AnalogIO.
      */
-    public double getMin();
+    double getMin();
     
     /**
      * Get the maximum value of this AnalogIO.
      */
-    public double getMax();
+    double getMax();
     
     /**
      * Get the resloution of this AnalogIO.
      */
-    public double getResolution();
+    double getResolution();
 
     /**
      * Is this AnalogIO absolute or relative?
      */
-    public AbsoluteOrRelative getAbsoluteOrRelative();
+    AbsoluteOrRelative getAbsoluteOrRelative();
 
     /**
      * Request an update from the layout soft/hardware. May not even happen, and
      * if it does it will happen later; listen for the result.
      */
-    default public void requestUpdateFromLayout() {
+    default void requestUpdateFromLayout() {
     }
 
 }
