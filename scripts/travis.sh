@@ -12,6 +12,7 @@ HEADLESS=${HEADLESS:-false}
 export MAVEN_OPTS=-Xmx1536m
 
 if [[ "${HEADLESS}" == "true" ]] ; then
+    #mvn sonar:sonar -Dsonar.projectKey=mickster04_JMRI -Dsonar.projectVersion=1.2
     if [[ "${STATIC}" == "true" ]] ; then
         # compile with ECJ for warnings or errors
         mvn antrun:run -Danttarget=tests-warnings-check
@@ -30,7 +31,6 @@ if [[ "${HEADLESS}" == "true" ]] ; then
             -Dant.jvm.args="-Djava.awt.headless=${HEADLESS}" \
             -Djava.awt.headless=${HEADLESS} \
             -Dcucumber.options="--tags 'not @Ignore' --tags 'not @Headed'"
-        mvn sonar:sonar -Dsonar.projectKey=mickster04_JMRI -Dsonar.sources= java/src/ -Dsonar.projectVersion=1.1
     fi
 else
     # run full GUI test suite and fail on coverage issues
