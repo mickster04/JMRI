@@ -38,7 +38,7 @@ before_script:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then dbus-launch ; fi
 
 script:
-  -  if [[ "$SONAR" == "true" ]] ; then sonar-scanner -Dsonar.projectKey=mickster04_JMRI -Dsonar.projectVersion=1.3 -Dsonar.sources=java/src -Dsonar.sources.exclusions=java/src/jmrix -Dsonar.java.binaries=target/classes; elif [[ "$PRINT_SUMMARY" == "false" ]] ; then travis_wait 50 ./scripts/travis.sh ; else ./scripts/travis.sh ; fi
+  -  if [[ "$SONAR" == "true" ]] ; then sonar-scanner -Dsonar.projectKey=mickster04_JMRI -Dsonar.projectVersion=1.3 -Dsonar.sources=java/src -Dsonar.exclusions=java/src/jmrix -Dsonar.java.binaries=target/classes; elif [[ "$PRINT_SUMMARY" == "false" ]] ; then travis_wait 50 ./scripts/travis.sh ; else ./scripts/travis.sh ; fi
 
 git:
   depth: false
