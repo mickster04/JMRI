@@ -62,16 +62,17 @@ public class AppConfigBase extends JmriPanel {
         Map<String, List<ConnectionConfig>> ports = new HashMap<>();
         ConnectionConfig[] connections = InstanceManager.getDefault(ConnectionConfigManager.class).getConnections();
         for (ConnectionConfig connection : connections) {
-            if (!connection.getDisabled()) {
-                String port = connection.getInfo();
-                if (!port.equals(JmrixConfigPane.NONE)) {
-                    if (!ports.containsKey(port)) {
-                        List<ConnectionConfig> arg1 = new ArrayList<>();
-                        arg1.add(connection);
-                        ports.put(port, arg1);
-                    } else {
-                        ports.get(port).add(connection);
-                    }
+            if (connection.getDisabled()) {
+                continue;
+            }
+            String port = connection.getInfo();
+            if (!port.equals(JmrixConfigPane.NONE)) {
+                if (!ports.containsKey(port)) {
+                    List<ConnectionConfig> arg1 = new ArrayList<>();
+                    arg1.add(connection);
+                    ports.put(port, arg1);
+                } else {
+                    ports.get(port).add(connection);
                 }
             }
         }
@@ -87,9 +88,9 @@ public class AppConfigBase extends JmriPanel {
                     nameB.append("|");
                 }
                 String instanceNames = new String(nameB);
-                instanceNames = instanceNames.substring(0, instanceNames.lastIndexOf("|"));
+                instanceNames = instanceNames.substring(0, instanceNames.lastIndexOf('|'));
                 instanceNames = instanceNames.replaceAll("[|]", ", ");
-                log.error("Duplicate ports found on: " + instanceNames + " for port: " + e.getKey());
+                log.error("Duplicate ports found on: {} for port: {}", instanceNames, e.getKey());
             }
         }
         return ret;
@@ -103,15 +104,8 @@ public class AppConfigBase extends JmriPanel {
     private boolean checkPortNames() {
         for (ConnectionConfig connection : InstanceManager.getDefault(ConnectionConfigManager.class).getConnections()) {
             String port = connection.getInfo();
-            if (port.equals(JmrixConfigPane.NONE_SELECTED) || port.equals(JmrixConfigPane.NO_PORTS_FOUND)) {
-                if (JOptionPane.YES_OPTION != JOptionPane.showConfirmDialog(
-                        null,
-                        MessageFormat.format(rb.getString("MessageSerialPortWarning"), new Object[]{port, connection.getConnectionName()}),
-                        rb.getString("MessageSerialPortNotValid"),
-                        JOptionPane.YES_NO_OPTION,
-                        JOptionPane.ERROR_MESSAGE)) {
-                    return false;
-                }
+            if (port.equals(JmrixConfigPane.NONE_SELECTED) || port.equals(JmrixConfigPane.NO_PORTS_FOUND) && JOptionPane.YES_OPTION != JOptionPane.showConfirmDialog(null, MessageFormat.format(rb.getString("MessageSerialPortWarning"), port, connection.getConnectionName()), rb.getString("MessageSerialPortNotValid"), JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE)) {
+                return false;
             }
         }
         return true;
@@ -129,9 +123,7 @@ public class AppConfigBase extends JmriPanel {
             cm.removePrefItems();
         }
         // put the new GUI managedPreferences on the persistance list
-        this.getPreferencesPanels().values().stream().forEach((panel) -> {
-            this.registerWithConfigureManager(panel);
-        });
+        this.getPreferencesPanels().values().forEach(this::registerWithConfigureManager);
         if (cm != null) {
             cm.storePrefs();
         }
@@ -146,7 +138,7 @@ public class AppConfigBase extends JmriPanel {
         }
         if (panel instanceof ManagingPreferencesPanel) {
             log.debug("Iterating over managed panels within {}/{}", panel.getPreferencesItemText(), panel.getTabbedPreferencesTitle());
-            ((ManagingPreferencesPanel) panel).getPreferencesPanels().stream().forEach((managed) -> {
+            ((ManagingPreferencesPanel) panel).getPreferencesPanels().forEach(managed -> {
                 log.debug("Registering {} with the ConfigureManager", managed.getClass().getName());
                 this.registerWithConfigureManager(managed);
             });
@@ -166,10 +158,8 @@ public class AppConfigBase extends JmriPanel {
             return;
         }
         // true if there arn't any duplicates
-        if (!checkDups()) {
-            if (!(JOptionPane.showConfirmDialog(null, rb.getString("MessageLongDupsWarning"), rb.getString("MessageShortDupsWarning"), JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION)) {
-                return;
-            }
+        if (!checkDups() &&(JOptionPane.showConfirmDialog(null, rb.getString("MessageLongDupsWarning"), rb.getString("MessageShortDupsWarning"), JOptionPane.YES_NO_OPTION) != JOptionPane.YES_OPTION)) {
+            return;
         }
         saveContents();
         final UserPreferencesManager p;
@@ -214,7 +204,7 @@ public class AppConfigBase extends JmriPanel {
     /**
      * @return the preferencesPanels
      */
-    public HashMap<String, PreferencesPanel> getPreferencesPanels() {
+    public Map<String, PreferencesPanel> getPreferencesPanels() {
         return preferencesPanels;
     }
 
